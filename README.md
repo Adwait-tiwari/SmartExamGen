@@ -70,8 +70,8 @@ cd SmartExamGen
 ### 2. Setup Backend
 
 ```bash
-cd backend
 npm install
+npm start
 ```
 
 > Create a `.env` file inside the `backend/` directory with the following content:
@@ -92,7 +92,7 @@ npm run dev
 ### 3. Setup Frontend
 
 ```bash
-cd ../frontend
+cd ./client
 npm install
 npm start
 ```
