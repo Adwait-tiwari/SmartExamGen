@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import axios from 'axios';
+import api from '../../utils/api';
 import { useNavigate } from 'react-router-dom';
 import { useFormData } from '../../context/FormDataContext';
 import Navbar from '../header/Navbar';
@@ -27,7 +27,7 @@ function QuestionPaperForm() {
     event.preventDefault();
 
     try {
-      await axios.post("http://localhost:5000/api/questions/generate", {
+      await api.post("/api/questions/generate", {
         subject,
         difficulty,
         type: questionTypes,

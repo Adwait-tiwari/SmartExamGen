@@ -1,5 +1,5 @@
 import { useEffect, useState, useContext } from "react";
-import axios from "axios";
+import api from "../../utils/api";
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -35,7 +35,7 @@ const ResultDashboard = () => {
     const fetchScores = async () => {
       try {
         if (!user?._id) return;
-        const res = await axios.get(`http://localhost:5000/api/scores/user/${user._id}`);
+        const res = await api.get(`/api/scores/user/${user._id}`);
         console.log("API Response:", res.data);
         const data = res.data;
 

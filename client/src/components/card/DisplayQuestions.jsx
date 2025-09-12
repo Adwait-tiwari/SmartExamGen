@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import Navbar from "../header/Navbar";
 import { useParams, useLocation, useNavigate } from "react-router-dom";
-import axios from "axios";
+import api from "../../utils/api";
 
 function DisplayQuestions() {
   const { subject } = useParams();
@@ -16,7 +16,7 @@ function DisplayQuestions() {
   useEffect(() => {
     const fetchQuestions = async () => {
       try {
-        const res = await axios.get("http://localhost:5000/api/questions/generate", {
+        const res = await api.get("/api/questions/generate", {
           params: {
             subject,
             difficulty: state?.difficulty || null,
@@ -98,7 +98,7 @@ function DisplayQuestions() {
     }
 
     try {
-      await axios.post("http://localhost:5000/api/scores/submit", {
+      await api.post("/api/scores/submit", {
         userId: user._id,
         subject,
         score,

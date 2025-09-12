@@ -1,5 +1,6 @@
 import { createContext, useState, useEffect } from 'react';
 import axios from 'axios';
+import api from '../utils/api';
 import { jwtDecode } from 'jwt-decode';
 
 const AuthContext = createContext();
@@ -49,7 +50,7 @@ export const AuthProvider = ({ children }) => {
   // ✅ Signup
   const register = async (formData) => {
     try {
-      const res = await axios.post('http://localhost:5000/api/auth/signup', formData);
+      const res = await api.post('/api/auth/signup', formData);
       decodeAndSetUser(res.data.token);
       return true;
     } catch (err) {
@@ -61,7 +62,7 @@ export const AuthProvider = ({ children }) => {
   // ✅ Manual Login
   const login = async (formData) => {
     try {
-      const res = await axios.post('http://localhost:5000/api/auth/login', formData);
+      const res = await api.post('/api/auth/login', formData);
       decodeAndSetUser(res.data.token);
       return true;
     } catch (err) {

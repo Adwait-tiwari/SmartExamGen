@@ -8,6 +8,6 @@ export const generateToken = (user) => {
         picture: user.picture || null, // Include picture if available
         isGoogle: Boolean(user.googleId), // Set true if googleId exists
     },
-        process.env.JWT_SECRET, { expiresIn: '1h' }
+        process.env.SESSION_SECRET, { expiresIn: '1h' }
     );
 };
