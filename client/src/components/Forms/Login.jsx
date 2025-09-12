@@ -36,7 +36,7 @@ const LoginForm = () => {
   // ✅ Google OAuth Redirect Handler
   const handleGoogleSignIn = () => {
     // Redirects to backend for Google OAuth
-    window.open("http://localhost:5000/api/google-auth/google", "_self");
+    window.open("http://smartexamgen.netlify.app/api/google-auth/google", "_self");
   };
 
   return (
