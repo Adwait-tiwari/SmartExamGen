@@ -35,7 +35,7 @@ const LoginForm = () => {
 
   // ✅ Google OAuth Redirect Handler
   const handleGoogleSignIn = () => {
-    window.location.href = "https://smartexamgen.netlify.app/api/google-auth/google";
+    window.location.href = "https://smart-exam-gzl34gpki-adwaits-projects-d578e2d0.vercel.app/api/google-auth/google";
   };
 
   return (
