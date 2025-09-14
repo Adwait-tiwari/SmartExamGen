@@ -26,7 +26,7 @@ app.set("trust proxy", 1);
 // Middleware
 app.use(
     cors({
-        origin: process.env.FRONTEND_URL, // e.g. https://your-frontend.vercel.app
+        origin: process.env.FRONTEND_URL, // e.g. https://smartexamgen.netlify.app
         credentials: true,
     })
 );
