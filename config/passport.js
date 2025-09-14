@@ -1,4 +1,3 @@
-// config/passport.js
 import passport from 'passport';
 import { Strategy as GoogleStrategy } from 'passport-google-oauth20';
 import GoogleUser from '../modals/GoogleUser.js';
@@ -10,8 +9,8 @@ passport.use(
     new GoogleStrategy({
         clientID: process.env.CLIENT_ID,
         clientSecret: process.env.CLIENT_SECRET,
-        callbackURL: '/api/google-auth/google/callback',
-        userProfileURL: 'https://www.googleapis.com/oauth2/v3/userinfo', // ensure photo is included
+        callbackURL: process.env.GOOGLE_CALLBACK_URL, // 🔥 use env variable
+        userProfileURL: 'https://www.googleapis.com/oauth2/v3/userinfo',
     },
         async (accessToken, refreshToken, profile, done) => {
             try {
@@ -19,13 +18,10 @@ passport.use(
 
                 let user = await GoogleUser.findOne({ googleId: profile.id });
 
-                const pictureUrl =
-                    profile &&
-                        profile.photos &&
-                        profile.photos[0] &&
-                        profile.photos[0].value ?
-                        profile.photos[0].value :
-                        null;
+                let pictureUrl = null;
+                if (profile && profile.photos && profile.photos.length > 0 && profile.photos[0].value) {
+                    pictureUrl = profile.photos[0].value;
+                }
 
                 if (!user) {
                     user = new GoogleUser({
@@ -37,7 +33,6 @@ passport.use(
 
                     await user.save();
                 } else {
-                    // 🔥 Only update if user has no picture yet
                     if (!user.picture && pictureUrl) {
                         user.picture = pictureUrl;
                         await user.save();
@@ -46,6 +41,7 @@ passport.use(
 
                 done(null, user);
             } catch (err) {
+                console.error("❌ Google Auth Error:", err);
                 done(err, null);
             }
         }
