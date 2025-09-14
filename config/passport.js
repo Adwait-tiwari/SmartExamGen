@@ -17,6 +17,7 @@ passport.use(
                 console.log("🔍 Google Profile Received:", JSON.stringify(profile, null, 2));
 
                 let user = await GoogleUser.findOne({ googleId: profile.id });
+                console.log("✅ Found User:", user);
 
                 let pictureUrl = null;
                 if (profile && profile.photos && profile.photos.length > 0 && profile.photos[0].value) {
