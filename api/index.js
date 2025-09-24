@@ -26,7 +26,7 @@ app.set("trust proxy", 1);
 // Middleware
 app.use(cors({
     origin: [
-        "https://smartexamgen.netlify.app", // ✅ your frontend URL
+        process.env.FRONTEND_URL, "http://localhost:5173"
     ],
     credentials: true, // ✅ allow cookies/sessions
     methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
@@ -42,10 +42,10 @@ app.use(session({
     saveUninitialized: false,
     store: MongoStore.create({ mongoUrl: process.env.MONGODB_URI }),
     cookie: {
-        secure: process.env.NODE_ENV === "production", // ✅ must be true on Vercel
+        secure: process.env.NODE_ENV === "production",
         httpOnly: true,
-        sameSite: "none", // ✅ required for cross-site
-        maxAge: 1000 * 60 * 60 * 24, // 1 day
+        sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
+        maxAge: 1000 * 60 * 60 * 24,
     },
 }));
 

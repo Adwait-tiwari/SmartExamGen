@@ -1,5 +1,4 @@
 import { createContext, useState, useEffect } from 'react';
-import axios from 'axios';
 import api from '../utils/api';
 import { jwtDecode } from 'jwt-decode';
 
@@ -14,7 +13,7 @@ export const AuthProvider = ({ children }) => {
     try {
       const decoded = jwtDecode(token);
       const newUser = {
-        _id: decoded._id ,
+        _id: decoded._id,
         username: decoded.username,
         email: decoded.email,
         isGoogle: Boolean(decoded.isGoogle ?? false),
@@ -24,7 +23,9 @@ export const AuthProvider = ({ children }) => {
       setToken(token);
       localStorage.setItem('token', token);
       localStorage.setItem('user', JSON.stringify(newUser));
-      axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+
+      // Always attach token to your api instance
+      api.defaults.headers.common['Authorization'] = `Bearer ${token}`;
     } catch (err) {
       console.error("Token decoding error:", err);
     }
@@ -37,12 +38,11 @@ export const AuthProvider = ({ children }) => {
       decodeAndSetUser(storedToken);
     }
 
-    // ✅ Check if URL contains token from Google OAuth redirect
+    // ✅ Handle Google OAuth redirect
     const urlParams = new URLSearchParams(window.location.search);
     const oauthToken = urlParams.get('token');
     if (oauthToken) {
       decodeAndSetUser(oauthToken);
-      // Remove token from URL
       window.history.replaceState({}, document.title, window.location.pathname);
     }
   }, []);
@@ -71,22 +71,16 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
-  // ✅ Google Login (in case of manual call, but also handled above in `useEffect`)
-  const handleGoogleLogin = (token) => {
-    decodeAndSetUser(token);
-  };
-
- 
   const logout = () => {
     setUser(null);
     setToken(null);
     localStorage.removeItem('token');
     localStorage.removeItem('user');
-    delete axios.defaults.headers.common['Authorization'];
+    delete api.defaults.headers.common['Authorization'];
   };
 
   return (
-    <AuthContext.Provider value={{ user, token, register, login, logout, handleGoogleLogin }}>
+    <AuthContext.Provider value={{ user, token, register, login, logout }}>
       {children}
     </AuthContext.Provider>
   );
