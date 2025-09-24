@@ -22,7 +22,7 @@ router.get(
         // Add isGoogle: true here
         const token = generateToken(req.user);
         // Redirect to your frontend with the token
-        res.redirect("https://smartexamgen.netlify.app/dashboard");
+        res.redirect(`${process.env.FRONTEND_URL}/?token=${token}`);
     }
 );
 
